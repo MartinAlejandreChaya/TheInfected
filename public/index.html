@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>MineSwpBattleOnline</title>
+    <script src="libraries/p5.js" type="text/javascript"></script>
+
+    <script src="libraries/p5.dom.js" type="text/javascript"></script>
+    <script src="libraries/p5.sound.js" type="text/javascript"></script>
+
+    <script src="sketch.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script>
+      //Prevent scrolling
+      window.addEventListener("keydown", function(e) {
+          // space and arrow keys
+          if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+              e.preventDefault();
+          }
+      }, false);
+      //BUTTON EVENTS
+      let nPlayers = 0;
+      let size = [0, 0];
+      let sizeChosen = false;
+      let gameStarted = false;
+      let socketConnected = false;
+      let time = 0;
+
+      function buttonClicked(elem) {
+        let id = elem.id;
+        if (id.startsWith("1")){
+          document.getElementById("11").style.backgroundColor = "#E8E8E8";
+          document.getElementById("12").style.backgroundColor = "#E8E8E8";
+          document.getElementById("13").style.backgroundColor = "#E8E8E8";
+        }
+        else if (id.startsWith("2")) {
+          document.getElementById("21").style.backgroundColor = "#E8E8E8";
+          document.getElementById("22").style.backgroundColor = "#E8E8E8";
+          document.getElementById("23").style.backgroundColor = "#E8E8E8";
+          sizeChosen = true;
+        }
+        else if (id.startsWith("3")) {
+          document.getElementById("31").style.backgroundColor = "#E8E8E8";
+          document.getElementById("32").style.backgroundColor = "#E8E8E8";
+          document.getElementById("33").style.backgroundColor = "#E8E8E8";
+        }
+
+        document.getElementById(id).style.backgroundColor = "#71FA61";
+
+        switch (id) {
+          case "11": nPlayers = 2;
+            break;
+          case "12": nPlayers = 3;
+            break;
+          case "13": nPlayers = 4;
+            break;
+          case "21": size = [20, 14];
+            break;
+          case "22": size = [30, 22];
+            break;
+          case "23": size = [40, 33]
+            break;
+          case "31": time = 20000;
+            break;
+          case "32": time = 35000;
+            break;
+          case "33": time = 70000;
+            break;
+        }
+      }
+
+      function allGray() {
+        document.getElementById("11").style.backgroundColor = "#E8E8E8";
+        document.getElementById("12").style.backgroundColor = "#E8E8E8";
+        document.getElementById("13").style.backgroundColor = "#E8E8E8";
+        document.getElementById("21").style.backgroundColor = "#E8E8E8";
+        document.getElementById("22").style.backgroundColor = "#E8E8E8";
+        document.getElementById("23").style.backgroundColor = "#E8E8E8";
+        document.getElementById("31").style.backgroundColor = "#E8E8E8";
+        document.getElementById("32").style.backgroundColor = "#E8E8E8";
+        document.getElementById("33").style.backgroundColor = "#E8E8E8";
+        nPlayers = 0;
+        sizeChosen = false;
+        size = [0, 0];
+        gameStarted = false;
+        socketConnected = true;
+        time = 0;
+      }
+
+      function startGame() {
+        if(nPlayers == 0 || !sizeChosen || time == 0) {
+          alert("Please choose a number of players and grid size");
+          return;
+        }
+        if (!gameStarted) {
+          connectWithServer(nPlayers, size, socketConnected, time);
+          gameStarted = true;
+        }
+        else {
+          alert("You are already in a game. Click exit game to join a new game");
+        }
+      }
+
+
+      function showPopUp() {
+        document.getElementById("rulesPopUp").style.display = 'block';
+      }
+      function hidePopUp() {
+        document.getElementById("rulesPopUp").style.display = 'none';
+      }
+    </script>
+  </head>
+
+
+  <body>
+
+    <header>
+      <h1> THE <b>INFECTED</b></h1>
+    </header>
+    <div id="rules">
+      <button id="rulesButton" onclick="showPopUp()">RULES
+      </button>
+      <div id="rulesPopUp">
+        <p>The infected (red) has to chase other players before time runs out (by moving with the arrowkeys). <br>
+          <img src="/Images/c3.png" alt="game screenshot"> <br><br>
+          Other players can place walls by pressing the space-bar. The infected can shoot by pressing the space-bar. <br>
+          <img src="/Images/c1.png" alt="game screenshot"> <br><br>
+          The green boxes are tokens, that will decrease time left (when picked up by a player) or increase it (when picked up by an infected) <br>
+          <img src="/Images/c2.png" alt="game screenshot"> <br>
+        </p>
+        <button onclick="hidePopUp()">HIDE</button>
+      </div>
+    </div>
+
+
+
+    <section id="menu">
+      <ul>
+        <h3>NUMBER OF PLAYERS: </h3>
+        <li>
+          <button id="11" onclick="buttonClicked(this)">2
+          </button>
+          <button id="12" onclick="buttonClicked(this)">3
+          </button>
+          <button id="13" onclick="buttonClicked(this)">4
+          </button>
+        </li>
+
+        <h3>GRID SIZE</h3>
+        <li>
+          <button id="21" onclick="buttonClicked(this)">small
+          </button>
+          <button id="22" onclick="buttonClicked(this)">medium
+          </button>
+          <button id="23" onclick="buttonClicked(this)">BIG
+          </button>
+        </li>
+
+        <h3>TIME</h3>
+        <li>
+          <button id="31" onclick="buttonClicked(this)">20s
+          </button>
+          <button id="32" onclick="buttonClicked(this)">35s
+          </button>
+          <button id="33" onclick="buttonClicked(this)">70s
+          </button>
+        </li>
+
+        <li>
+          <button id="playButton" onclick="startGame()">
+            PLAY
+          </button>
+        </li>
+      </ul>
+    </section>
+    
+    <div>
+      <p>Online Players: <b id="onlinePlayersNumber">-</b></p>
+    </div>
+
+    <div id="clock">
+      <p id="clockText"> 00s </p>
+    </div>
+
+    <div id="canvasContainer">
+    </div>
+
+    <div id="currentGame">
+      <button id="exitGameButton" onclick="exitGame()">
+        Exit game
+      </button>
+      <p>players connected: <b id="connectedPlayersNumber">-/-</b></p>
+    </div>
+
+    <footer>
+      <p>Created by Martín Alejandre Chaya </p>
+    </footer>
+  </body>
+</html>

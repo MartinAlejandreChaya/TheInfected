@@ -1,0 +1,179 @@
+/*
+PALETTE
+black #252323
+dark blue #546A76
+light blue #88A0A8
+light brown #F1DAC4
+white #FFFFFF
+*/
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding-top: 1em;
+  background-color: #252323;
+  color: white;
+}
+header h1 {
+  text-align: center;
+  font-size: 2em;
+  padding: .5em;
+  padding-top: 1em;
+  margin: 0;
+}
+header h1 b {
+  color: red;
+}
+
+#canvasContainer {
+  display:inline-block;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+footer {
+  background-color: #88A0A8;
+  padding: .05em;
+  text-align: center;
+  color: #252323;
+}
+
+
+section ul {
+  list-style: none;
+  text-align: center;
+  font-weight: bold;
+}
+
+section ul li {
+  display: flex;
+  padding-left: 2em;
+  padding-right: 2em;
+  text-align: center;
+}
+section ul h3 {
+  margin-top: 1.5em;
+  text-align: center;
+  font-size: 1.5em;
+}
+section ul li button {
+  font-size: 1.5em;
+  display: inline-block;
+  width: 100%;
+  margin-left: 2em;
+  margin-right: 2em;
+  height: 5em;
+  background-color: #E8E8E8;
+}
+section ul li button:hover {
+  background-color: #AFFFB1;
+}
+
+section ul li #playButton {
+  width: 100%;
+  display: inline-block;
+  font-weight: bolder;
+  background-color: #71FA61;
+  color: black;
+  height: 4em;
+  font-size: 2.5em;
+  margin: 2em;
+  transition-duration: .2s;
+}
+
+section ul li #playButton:hover {
+  background-color: #004202;
+  color: white;
+}
+
+#currentGame {
+  margin-left: auto;
+  margin-right: 0;
+  width: 30%;
+  padding: 1em;
+  text-align: right;
+}
+
+#currentGame #exitGameButton {
+  width: 50%;
+  padding: .5em;
+}
+
+#clock {
+  margin-bottom: 1em;
+  text-align: center;
+}
+#clock #clockText {
+  border: solid black;
+  border-width: 2px;
+  font-weight: bold;
+  font-size: 2em;
+  width: 30%;
+  margin: auto;
+}
+
+#rules {
+  width: 100%;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 1em;
+  text-align: center;
+  background: #2F4858;
+  padding-bottom: 1em;
+}
+
+#rulesButton {
+  font-weight: bolder;
+  font-size: 1.5em;
+  color: white;
+  background: #2F4858;
+  border: none;
+  padding: 1em;
+  margin: 0;
+  width: 30%;
+  height: 5em;
+  padding-bottom: 0;
+}
+#rulesButton:hover {
+  background: #4B758E;
+  color: black;
+}
+
+#rulesPopUp {
+  display: none;
+  background: white;
+  width: 70%;
+  margin: auto;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+ #rulesPopUp p{
+  font-size: 1.3em;
+  margin: 0;
+  padding: 1em;
+ }
+
+ #rulesPopUp p img {
+  width: 60%;
+ }
+
+ #rulesPopUp button {
+  font-weight: bolder;
+  font-size: 1.3em;
+  color: white;
+  background: #2F4858;
+  border: none;
+  padding: 1em;
+  margin: 0;
+  width: 30%;
+  height: 4.5em;
+  padding-bottom: 0;
+ }
+ #rulesPopUp button:hover {
+  background: #4B758E;
+  color: black;
+}
